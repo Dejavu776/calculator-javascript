@@ -119,6 +119,7 @@ class Calculator {
   //returns the length of the number
   _numberOfDigits(inputValue) {
     //console.log(typeof inputValue);
+    inputValue = inputValue.toString()
     let numberLength = inputValue.replace(".", "").length;
     return numberLength;
   }
@@ -132,9 +133,8 @@ class Calculator {
 
   //generate "E" value if 
   _lenghtError(inputValue) {
-    inputValue = inputValue.toString()
-
     if (this._numberOfDigits(inputValue) > 9) {
+      console.log(inputValue,typeof inputValue)
       inputValue = "E";
       return inputValue
     } else{
