@@ -130,15 +130,14 @@ class Calculator {
     return inputValue
   }
 
-  
+  //generate "E" value if 
   _lenghtError(inputValue) {
     inputValue = inputValue.toString()
 
-    if (this._numberOfDigits(inputValue) > 12) {
+    if (this._numberOfDigits(inputValue) > 9) {
       inputValue = "E";
       return inputValue
     } else{
-      inputValue = this.#displayValue
       return inputValue
     }
   }
