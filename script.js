@@ -131,13 +131,19 @@ class Calculator {
     return inputValue
   }
 
-  //generate "E" value if 
-  _lenghtError(inputValue) {
+//catch some compute Errors
+  _computeError(inputValue) {
     if (this._numberOfDigits(inputValue) > 9) {
-      console.log(inputValue,typeof inputValue)
-      inputValue = "E";
+      if ((inputValue > 999999999)|| (inputValue < 0.00000001)) {
+        inputValue = "E";
+        return inputValue
+      } else {
+        inputValue = inputValue.toPrecision(9)
+        return inputValue
+      }
+    } else if (!(Number.isFinite(inputValue))){
       return inputValue
-    } else{
+    } else {
       return inputValue
     }
   }
@@ -173,7 +179,7 @@ class Calculator {
 
   //reconfiguring variables in fields after calculation
   _afterCompute(){
-    this.#displayValue = this._lenghtError(this.#displayValue)
+    this.#displayValue = this._computeError(this.#displayValue)
     calcDisplay.textContent = this.#displayValue
     this.#memoryValue = this.#displayValue
     this.#displayValue = ""
