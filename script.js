@@ -118,17 +118,23 @@ class Calculator {
 
   //returns the length of the number
   _numberOfDigits(inputValue) {
-    //console.log(typeof inputValue);
     inputValue = inputValue.toString()
     let numberLength = inputValue.replace(".", "").length;
     return numberLength;
   }
 
-  //checks that the number does not start with zeros etc. 0005235.525
+  //checks that the number does not start with zeros etc. 0005235.525 ant transform ->5235.525
   _deleteZeroNumbers(inputValue){
-    inputValue = Number.parseFloat(inputValue);
     inputValue = inputValue.toString()
-    return inputValue
+    if (!(inputValue.includes('.'))){
+      inputValue = Number.parseFloat(inputValue);
+      inputValue = inputValue.toString()
+      return inputValue
+    } 
+    
+    if (inputValue.includes('.')) {
+      return inputValue
+    }
   }
 
 //catch some compute Errors
