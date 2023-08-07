@@ -11,11 +11,9 @@ class Calculator {
     this._getButtonValue();
   }
 
-
   _main() {
     const operants = ['+','-','*','/','=']; 
 
-    //choose right math operation
     if (operants.includes(this.#clickValue)){
       this._compute();
     } 
@@ -44,16 +42,13 @@ class Calculator {
     if ((this.#memoryValue === "") && (!(this.#displayValue === ""))) {
       this.#memoryValue = this.#displayValue
       this.#displayValue = ""
-
-      this.#operantValue = this._changeOperant(this.#clickValue)
-
-      console.log("uložení hodnoty do paměti")
+      console.log("save value to memory")
       this._checkValue()
     }
 
     //changes the last selected operator
     if ((!(this.#memoryValue === "")) && ((this.#displayValue === ""))) {
-      this.#operantValue = this._changeOperant(this.#clickValue)
+      (!(this.#clickValue === '=')) ? this.#operantValue = this.#clickValue : null
       this._checkValue()
     }
 
@@ -61,33 +56,20 @@ class Calculator {
     //both numbers are saved
     if ((!(this.#memoryValue === "")) && (!(this.#displayValue === ""))) {
       this._checkValue()
-      this._computeLogic()
-
-    }
-  }
-
-  //choose right mathematic operation
-  _computeLogic(){
-    if (this.#operantValue==='+'){
-      this.#displayValue = this._plus(+this.#memoryValue,+this.#displayValue)
-      this._afterCompute()
-    }
-
-    if (this.#operantValue==='-'){
-      this.#displayValue = this._minus(+this.#memoryValue,+this.#displayValue)
-      this._afterCompute()
-    }
-
-    if (this.#operantValue==='*'){
-      this.#displayValue = this._multiplicate(+this.#memoryValue,+this.#displayValue)
-      this._afterCompute()
-    }
-
-    if (this.#operantValue==='/'){
-      this.#displayValue = this._divide(+this.#memoryValue,+this.#displayValue)
+      this.#displayValue = this._computeLogic(+this.#memoryValue, +this.#displayValue, this.#operantValue)
       this._afterCompute()
     }
   }
+
+
+  _computeLogic(value1,value2,operant) {
+    return operant ==='+' ? value1 + value2 
+    : operant ==='-' ? value1 - value2 
+    : operant ==='*' ? value1 * value2
+    : operant ==='/' ? value1 / value2
+    : null
+  }
+  
 
   //render a numeric value on the display
   _displayValue() {
@@ -103,7 +85,6 @@ class Calculator {
       this.#displayValue = this.#displayValue.concat("", this.#clickValue);
       calcDisplay.textContent = this.#displayValue;
     }
-    console.log(this.#displayValue,this.#memoryValue)
   }
 
   //sends information about the pressed button (etc. 2, 5 or =)
@@ -116,6 +97,7 @@ class Calculator {
     });
   }
 
+
   //returns the length of the number
   _numberOfDigits(inputValue) {
     inputValue = inputValue.toString()
@@ -123,7 +105,8 @@ class Calculator {
     return numberLength;
   }
 
-  //checks that the number does not start with zeros etc. 0005235.525 ant transform ->5235.525
+
+  //checks that the number does not start with zeros etc. 0005235.525 and transform ->5235.525
   _deleteZeroNumbers(inputValue){
     inputValue = inputValue.toString()
     if (!(inputValue.includes('.'))){
@@ -136,6 +119,7 @@ class Calculator {
       return inputValue
     }
   }
+
 
 //catch some compute Errors
   _computeError(inputValue) {
@@ -154,26 +138,6 @@ class Calculator {
     }
   }
 
-  _plus(value1,value2) {
-    let outputValue  = value1 + value2
-    return outputValue
-  }
-
-  _minus(value1,value2) {
-    let outputValue = value1 - value2
-    return outputValue
-  }
-
-  _multiplicate(value1,value2) {
-    let outputValue = value1 * value2
-    return outputValue
-  }
-
-  _divide(value1,value2) {
-    let outputValue = value1/value2
-    return outputValue
-  }
-
   //when the AC key is pressed, delete all variables
   _delete() {
     this.#clickValue = "";
@@ -183,6 +147,7 @@ class Calculator {
     calcDisplay.textContent = "0";
   }
 
+
   //reconfiguring variables in fields after calculation
   _afterCompute(){
     this.#displayValue = this._computeError(this.#displayValue)
@@ -191,14 +156,6 @@ class Calculator {
     this.#displayValue = ""
     this.#operantValue = this.#clickValue
     this._checkValue()
-  }
-
-  //change operant if not "="
-  _changeOperant(inputValue) {
-    if (!(inputValue === '=')){
-      let outputValue = inputValue
-      return outputValue
-    }
   }
 
   //debugging method
